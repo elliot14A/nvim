@@ -24,6 +24,7 @@ local setup_handlers = user_opts("lsp.setup_handlers", {
   function(server, opts) require("lspconfig")[server].setup(opts) end,
 })
 
+
 M.diagnostics = { [0] = {}, {}, {}, {} }
 
 M.setup_diagnostics = function(signs)
@@ -152,7 +153,7 @@ M.on_attach = function(client, bufnr)
 
   if is_available "telescope.nvim" then
     lsp_mappings.n["<leader>lD"] =
-      { function() require("telescope.builtin").diagnostics() end, desc = "Search diagnostics" }
+    { function() require("telescope.builtin").diagnostics() end, desc = "Search diagnostics" }
   end
 
   if is_available "mason-lspconfig.nvim" then
@@ -224,9 +225,9 @@ M.on_attach = function(client, bufnr)
     local autoformat = M.formatting.format_on_save
     local filetype = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
     if
-      autoformat.enabled
-      and (tbl_isempty(autoformat.allow_filetypes or {}) or tbl_contains(autoformat.allow_filetypes, filetype))
-      and (tbl_isempty(autoformat.ignore_filetypes or {}) or not tbl_contains(autoformat.ignore_filetypes, filetype))
+        autoformat.enabled
+        and (tbl_isempty(autoformat.allow_filetypes or {}) or tbl_contains(autoformat.allow_filetypes, filetype))
+        and (tbl_isempty(autoformat.ignore_filetypes or {}) or not tbl_contains(autoformat.ignore_filetypes, filetype))
     then
       add_buffer_autocmd("lsp_auto_format", bufnr, {
         events = "BufWritePre",
@@ -391,7 +392,7 @@ M.capabilities.textDocument.completion.completionItem.deprecatedSupport = true
 M.capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
 M.capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
 M.capabilities.textDocument.completion.completionItem.resolveSupport =
-  { properties = { "documentation", "detail", "additionalTextEdits" } }
+{ properties = { "documentation", "detail", "additionalTextEdits" } }
 M.capabilities.textDocument.foldingRange = { dynamicRegistration = false, lineFoldingOnly = true }
 M.capabilities = user_opts("lsp.capabilities", M.capabilities)
 M.flags = user_opts "lsp.flags"
@@ -401,10 +402,15 @@ M.flags = user_opts "lsp.flags"
 ---@return table # The table of LSP options used when setting up the given language server
 function M.config(server_name)
   local server = require("lspconfig")[server_name]
-  local lsp_opts = extend_tbl(
-    extend_tbl(server.document_config.default_config, server),
-    { capabilities = M.capabilities, flags = M.flags }
-  )
+  local lsp_opts = {}
+  if server.document_config then
+    lsp_opts = extend_tbl(
+      extend_tbl(server.document_config.default_config, server),
+      { capabilities = M.capabilities, flags = M.flags }
+    )
+  else
+    lsp_opts = { capabilities = M.capabilities, flags = M.flags }
+  end
   if server_name == "jsonls" then -- by default add json schemas
     local schemastore_avail, schemastore = pcall(require, "schemastore")
     if schemastore_avail then

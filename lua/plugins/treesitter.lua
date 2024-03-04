@@ -9,8 +9,7 @@ return {
   cmd = {
     "TSBufDisable",
     "TSBufEnable",
-    "TSBufToggle",
-    "TSDisable",
+    "TSBufToggle", "TSDisable",
     "TSEnable",
     "TSToggle",
     "TSInstall",
@@ -25,6 +24,7 @@ return {
   opts = function()
     return {
       autotag = { enable = true },
+      ensure_installed = { "typescript", "tsx" },
       context_commentstring = { enable = true, enable_autocmd = false },
       highlight = {
         enable = true,

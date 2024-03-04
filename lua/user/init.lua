@@ -1,8 +1,43 @@
 return {
-  plugins = {
-    {
-      "modocache/move.vim"
+  lsp = {
+    -- add custom handler
+    config = {
+      htmx = function()
+        return {
+          filetypes = { "html", "templ" },
+        }
+      end,
+      tailwind = function()
+        return {
+          filetypes = { "templ", "astro", "javascript", "typescript", "react", "html" },
+          init_options = { userLanguages = { templ = "html" } },
+        }
+      end,
+      templ = function()
+        return {
+          filetypes = { "templ" },
+        }
+      end,
+      gopls = function()
+        return {
+          filetypes = { "go", "gomod", "gowork", "gotmpl" }
+        }
+      end,
+      emmet_ls = function()
+        return {
+          filetypes = { "html", "css", "javascript", "typescript", "react", "templ" },
+        }
+      end,
+      unocss = function()
+        return {
+          filetypes = { "html", "css", "javascript", "typescript", "react", "templ" },
+        }
+      end
     },
+  },
+  plugins = {
+    "modocache/move.vim",
+    "simrat39/rust-tools.nvim",
     {
       "NvChad/nvim-colorizer.lua",
       opts = {
@@ -214,14 +249,15 @@ return {
       config = function()
         require("telescope").load_extension("file_browser")
       end,
-    }, {
-    "saecki/crates.nvim",
-    ft = { "rust", "toml" },
-    config = function(_, opts)
-      local crates = require("crates")
-      crates.setup(opts)
-      crates.show()
-    end
-  }
+    },
+    {
+      "saecki/crates.nvim",
+      ft = { "rust", "toml" },
+      config = function(_, opts)
+        local crates = require("crates")
+        crates.setup(opts)
+        crates.show()
+      end
+    }
   },
 }
