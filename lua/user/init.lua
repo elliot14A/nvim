@@ -7,9 +7,14 @@ return {
           filetypes = { "html", "templ" },
         }
       end,
-      tailwind = function()
+      elixirls = function()
         return {
-          filetypes = { "templ", "astro", "javascript", "typescript", "react", "html" },
+          filetypes = { "ex", "exs", "elixir", "heex" }
+        }
+      end,
+      tailwindcss = function()
+        return {
+          filetypes = { "templ", "astro", "javascript", "typescript", "react", "html", "heex" },
           init_options = { userLanguages = { templ = "html" } },
         }
       end,
@@ -25,7 +30,7 @@ return {
       end,
       emmet_ls = function()
         return {
-          filetypes = { "html", "css", "javascript", "typescript", "react", "templ" },
+          filetypes = { "html", "css", "javascript", "typescript", "react", "templ", "heex" },
         }
       end,
       unocss = function()
