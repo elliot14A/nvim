@@ -1,5 +1,6 @@
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 vim.filetype.add({ extension = { templ = "templ" } })
+vim.filetype.add({ extension = { ts_ls = "ts_ls" } })
 if not vim.loop.fs_stat(lazypath) then
   local output = vim.fn.system {
     "git",

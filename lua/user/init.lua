@@ -14,7 +14,7 @@ return {
       end,
       tailwindcss = function()
         return {
-          filetypes = { "templ", "astro", "javascript", "typescript", "react", "html", "heex" },
+          filetypes = { "templ", "astro", "react", "html", "heex", "svelte", "jsx", "tsx" },
           init_options = { userLanguages = { templ = "html" } },
         }
       end,
@@ -30,19 +30,33 @@ return {
       end,
       emmet_ls = function()
         return {
-          filetypes = { "html", "css", "javascript", "typescript", "react", "templ", "heex" },
-        }
-      end,
-      unocss = function()
-        return {
-          filetypes = { "html", "css", "javascript", "typescript", "react", "templ" },
+          filetypes = { "html", "css", "javascript", "typescript", "react", "templ", "heex", "svelte" },
         }
       end
     },
   },
   plugins = {
+    'kristijanhusak/vim-dadbod-completion',
     "modocache/move.vim",
+    'tpope/vim-dadbod',
     "simrat39/rust-tools.nvim",
+    {
+      'kristijanhusak/vim-dadbod-ui',
+      dependencies = {
+        { 'tpope/vim-dadbod',                     lazy = true },
+        { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' }, lazy = true },
+      },
+      cmd = {
+        'DBUI',
+        'DBUIToggle',
+        'DBUIAddConnection',
+        'DBUIFindBuffer',
+      },
+      init = function()
+        -- Your DBUI configuration
+        vim.g.db_ui_use_nerd_fonts = 1
+      end,
+    },
     {
       "NvChad/nvim-colorizer.lua",
       opts = {
@@ -55,8 +69,14 @@ return {
       "hrsh7th/nvim-cmp",
       dependencies = {
         { "roobert/tailwindcss-colorizer-cmp.nvim", config = true },
+        'kristijanhusak/vim-dadbod-completion'
       },
       opts = function(_, opts)
+        local cmp = require("cmp")
+        opts.sources = cmp.config.sources(vim.list_extend(
+          opts.sources or {},
+          { { name = 'vim-dadbod-completion' } }
+        ))
         local format_kinds = opts.formatting.format
         opts.formatting.format = function(entry, vim_item)
           format_kinds(entry, vim_item)
@@ -64,6 +84,7 @@ return {
         end
       end
     },
+    { "ellisonleao/gruvbox.nvim", priority = 1000, config = true, opts = ... },
     {
       'windwp/nvim-ts-autotag',
       config = function()
