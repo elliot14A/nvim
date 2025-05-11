@@ -1,0 +1,74 @@
+{
+  "neodev": {
+    "library": {
+      "enabled": true,
+      "plugins": true
+    }
+  },
+  "neoconf": {
+    "plugins": {
+      "lua_ls": {
+        "enabled": true
+      },
+      "emmet_ls": {
+        "enabled": true
+      },
+      "tailwindcss": {
+        "enabled": true
+      },
+      "rust_analyzer": {
+        "enabled": true
+      }
+    }
+  },
+  "lspconfig": {
+    "emmet_ls": {
+      "filetypes": [
+        "html",
+        "css",
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact"
+      ],
+      "init_options": {
+        "html": {
+          "options": {
+            "jsx.enabled": true
+          }
+        }
+      }
+    },
+    "tailwindcss": {
+      "filetypes": [
+        "html",
+        "css",
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact"
+      ],
+      "init_options": {
+        "userLanguages": {
+          "html": "html",
+          "css": "css",
+          "javascript": "javascript",
+          "javascriptreact": "javascript",
+          "typescript": "typescript",
+          "typescriptreact": "typescript"
+        }
+      },
+      "settings": {
+        "tailwindCSS": {
+          "experimental": {
+            "classRegex": [
+              "class!\\s*\\(\\s*\"([^\"]*)\"\\s*\\)",
+              "class!\\s*\\(\\s*'([^']*)'\\s*\\)"
+            ]
+          },
+          "validate": true
+        }
+      }
+    }
+  }
+}
