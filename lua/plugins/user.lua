@@ -14,6 +14,64 @@ return {
     end,
   },
   {
+    "f-person/git-blame.nvim",
+    event = "BufReadPre",
+    opts = {
+      enabled = true, -- Enable by default
+      date_format = "%r",
+    }
+  },
+  {
+    "rust-lang/rust.vim",
+    ft = { "rust" },                                         -- Load only for Rust files
+    init = function()
+      vim.g.rustfmt_autosave = 1                             -- Automatically format Rust files on save
+      vim.g.rust_clip_command = "xclip -selection clipboard" -- Use xclip for copying to clipboard
+    end,
+  },
+  {
+    "mfussenegger/nvim-dap",
+  },
+  {
+    "saecki/crates.nvim",
+    ft = { "toml" }, -- Load only for TOML files
+    config = function(_, opts)
+      local crates = require("crates")
+      crates.setup(opts)
+      crates.show() -- Automatically show crates on startup
+      vim.keymap.set("n", "<leader>rcu", function()
+        require("crates").upgrade_all_crates()
+      end, { desc = "Upgrade all crates" })
+    end,
+  },
+  -- dadbod setup
+  {
+    "kristijanhusak/vim-dadbod-ui",
+    dependencies = {
+      "kristijanhusak/vim-dadbod-completion",
+      "tpope/vim-dadbod",
+      "tpope/vim-scriptease",
+    },
+    cmd = { "DBUI", "DBUIToggle", "DBUIFindBuffer" },
+    config = function()
+      vim.g.db_ui_save_location = "~/.config/nvim/db_ui"
+      vim.g.db_ui_auto_execute_table_helpers = 0
+      vim.g.db_ui_use_nerd_fonts = 1
+    end,
+  },
+  {
+    "Exafunction/windsurf.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "hrsh7th/nvim-cmp",
+    },
+    config = function()
+      require("codeium").setup({
+      })
+    end
+  },
+
+  {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
     event = "InsertEnter",
@@ -35,17 +93,17 @@ return {
   },
   {
     "yetone/avante.nvim",
-    event = "VeryLazy",                             -- Load the plugin when needed, not at startup
-    version = "0.0.23",                             -- Pin to specific version for stability
+    event = "VeryLazy",
     opts = {
-      provider = "copilot",                         -- Use GitHub Copilot as the AI provider
-      copilot = {
-        endpoint = "https://api.githubcopilot.com", -- Copilot API endpoint
-        model = "claude-3.7-sonnet",                -- Use Claude 3.7 Sonnet model
-        proxy = nil,                                -- No proxy configuration
-        allow_insecure = false,                     -- Enforce secure connections only
-        timeout = 30000,                            -- API timeout in milliseconds (30 seconds)
-        temperature = 0                             -- Use deterministic responses (0 temperature)
+      provider = "copilot",
+      providers = {
+        copilot = {
+          endpoint = "https://api.githubcopilot.com",
+          model = "claude-4-sonnet",
+          proxy = nil,
+          allow_insecure = false,
+          timeout = 30000,
+        }
       }
     },
     build = "make",
@@ -54,26 +112,22 @@ return {
       "stevearc/dressing.nvim",
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
-      "echasnovski/mini.pick",         -- for file_selector provider mini.pick
-      "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
-      "hrsh7th/nvim-cmp",              -- autocompletion for avante commands and mentions
-      "ibhagwan/fzf-lua",              -- for file_selector provider fzf
-      "nvim-tree/nvim-web-devicons",   -- or echasnovski/mini.icons
-      "zbirenbaum/copilot.lua",        -- for providers='copilot'
+      "echasnovski/mini.pick",
+      "nvim-telescope/telescope.nvim",
+      "hrsh7th/nvim-cmp",
+      "ibhagwan/fzf-lua",
+      "nvim-tree/nvim-web-devicons",
+      "zbirenbaum/copilot.lua",
       {
-        -- support for image pasting
         "HakonHarnes/img-clip.nvim",
         event = "VeryLazy",
         opts = {
-          -- recommended settings
           default = {
             embed_image_as_base64 = false,
             prompt_for_file_name = false,
             drag_and_drop = {
               insert_mode = true,
             },
-            -- required for Windows users
-            use_absolute_path = true,
           },
         },
       },

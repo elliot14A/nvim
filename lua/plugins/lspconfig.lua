@@ -14,7 +14,7 @@ return {
           }
         },
         tailwindcss = {
-          -- filetypes = { "html", "css", "javascript", "javascriptreact", "typescript", "typescriptreact", "rust" },
+          filetypes = { "html", "css", "javascript", "javascriptreact", "typescript", "typescriptreact", "rust" },
           init_options = {
             userLanguages = {
               html = "html",
